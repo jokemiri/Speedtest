@@ -1,15 +1,42 @@
 import speedtest
 import tkinter as tk
 import messagebox
+from tkinter import *
+
+st=speedtest.Speedtest()
+
+#Window Properties
+root=tk.Tk()
+root.geometry("600x250+400+80")
+root.resizable(False, False)
+root.title("Speedtest")
+root.configure(background='#154c79')
+
+image_icon=PhotoImage(file="icon.png")
+root.iconphoto(False,image_icon)
+
+photo=PhotoImage(file="logo.png")
+myimage=Label(image=photo,background='#154c79')
+myimage.place(x=5, y=5)
+
+down_speed = st.download()/(1025*1025)
+up_speed = st.upload()/(1025*1025)
+
+speed = " "
 
 def button_click(args):
+    # global down_speed
+    # global up_speed
     if args == 1:
-        down_speed = (st.download()/(1025*1025),"Mbps")
-        dspeed = "Your download speed is {}"
-        print(dspeed.format(down_speed))
+        speed = tk.StringVar(str(st.download()/(1025*1025)))
+        
     elif args == 2:
-        messagebox.showinfo(st.upload()/(1025*1025),"Mbps")
-    # if args == 3:
+        speed = tk.StringVar(root, str(st.upload()/(1025*1025)))
+
+    # elif args == 3:
+    #     st.results.ping
+    
+
     # elif args == 3:
     #     servername=[]
     #     st.get_servers(servername)
@@ -18,23 +45,17 @@ def button_click(args):
 
 
 
-st=speedtest.Speedtest()
+download_button = tk.Button(root, text='Download Speed', width = 14, font='Candara, 12', 
+ background='white', foreground='#154c79', command=lambda:button_click(1)).place(x=50, y=110)
 
-#Window Properties
-root=tk.Tk()
-root.geometry("600x600+400+80")
-root.resizable(False, False)
-root.title("Speedtest")
-root.configure(background='#154c79')
+upload_button = tk.Button(root, text='Upload Speed', width = 14, font='Candara, 12', 
+ background='white', foreground='#154c79', command=lambda:button_click(2)).place(x=250, y=110)
 
-download_button = tk.Button(root, text='Download Speed', font='Candara, 14', 
- background='white', foreground='#154c79', command=lambda:button_click(1)).place(x=50, y=30)
+ping_button = tk.Button(root, text='Ping', width = 14, font='Candara, 12', 
+ background='white', foreground='#154c79', command=lambda:button_click(3)).place(x=450, y=110)
 
-upload_button = tk.Button(root, text='Upload Speed', font='Candara, 14', 
- background='white', foreground='#154c79', command=lambda:button_click(2)).place(x=250, y=30)
-
-# ping_button = tk.Button(root, text='Ping', font='Candara, 14', 
-#  background='white', foreground='#154c79', command=lambda:button_click(3)).place(x=300, y=30)
+dspeed_Label = tk.Label(root, textvariable=speed, 
+                        height=0, width=18, font=("Cambria", 26)).place(x=130, y=150)
 
 # option=int(input('''What speed do you want to measure:
 # 1) Download Speed
